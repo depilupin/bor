@@ -1,0 +1,24 @@
+name: Matrix Injection Confirm
+
+on:
+  workflow_dispatch:
+    inputs:
+      lang:
+        description: "Matrix input for language"
+        required: true
+        default: "go"
+
+jobs:
+  test-injection:
+    strategy:
+      matrix:
+        language: [ "${{ github.event.inputs.lang }}" ]
+
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+
+    steps:
+      - name: 🧪 Print confirmation
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Matrix language: ${{ matrix.language }}"
+          echo "Resolved runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}"
