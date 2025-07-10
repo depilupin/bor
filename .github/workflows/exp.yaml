@@ -1,0 +1,23 @@
+name: Matrix Injection Exploit PoC
+
+on:
+  workflow_dispatch:
+    inputs:
+      lang:
+        description: "Injected matrix.language value"
+        required: true
+
+jobs:
+  exploit:
+    strategy:
+      matrix:
+        language: [ "${{ github.event.inputs.lang }}" ]
+
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+
+    steps:
+      - name: 🔍 Show Injection Results
+        run: |
+          echo "🧪 Runner platform: ${{ runner.os }}"
+          echo "🧪 Injected language: ${{ matrix.language }}"
+          echo "🧪 Expression result: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}"
